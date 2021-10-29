@@ -1,5 +1,7 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
+
 const cors = require('cors');
 require('dotenv').config()
 
@@ -19,14 +21,30 @@ async function run() {
         await client.connect();
         // console.log('connected to database');
         const database = client.db('holidayport');
-        const placeCollection = database.collection('places');
+        const placesCollection = database.collection('places');
+
+        // GET API
+        app.get('/places', async (req, res) => {
+            const cursor = placesCollection.find({});
+            const places = await cursor.toArray();
+            res.send(places);
+        });
+
+        // GET Single Place
+        app.get('/places/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('getting specific place', id);
+            const query = { _id: ObjectId(id) };
+            const place = await placesCollection.findOne(query);
+            res.json(place);
+        })
 
         // POST API
         app.post('/places', async (req, res) => {
             const place = req.body;
             console.log('hit the post api', place);
 
-            const result = await placeCollection.insertOne(place);
+            const result = await placesCollection.insertOne(place);
             console.log(result);
             res.send(result);
 
