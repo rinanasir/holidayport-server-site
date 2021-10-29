@@ -1,9 +1,14 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const cors = require('cors');
 require('dotenv').config()
 
 const app = express();
 const port = 5000;
+
+// middleware
+app.use(cors());
+app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.zxert.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
@@ -18,16 +23,12 @@ async function run() {
 
         // POST API
         app.post('/places', async (req, res) => {
-
-            const place = {
-                "name": "ENGINE DIAGNOSTIC",
-                "price": "300",
-                "description": "Lorem ipsum dolor sit amet, consectetu radipisi cing elitBeatae autem aperiam nequ quaera molestias voluptatibus harum ametipsa.",
-                "img": "https://i.ibb.co/dGDkr4v/1.jpg"
-            };
+            const place = req.body;
+            console.log('hit the post api', place);
 
             const result = await placeCollection.insertOne(place);
             console.log(result);
+            res.send(result);
 
         });
     }
