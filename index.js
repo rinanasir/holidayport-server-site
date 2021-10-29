@@ -13,20 +13,20 @@ async function run() {
     try {
         await client.connect();
         // console.log('connected to database');
-        const database = client.db('carMechanic');
-        const servicesCollection = database.collection('services');
+        const database = client.db('holidayport');
+        const placeCollection = database.collection('places');
 
         // POST API
-        app.post('/servies', async (req, res) => {
+        app.post('/places', async (req, res) => {
 
-            const service = {
+            const place = {
                 "name": "ENGINE DIAGNOSTIC",
                 "price": "300",
                 "description": "Lorem ipsum dolor sit amet, consectetu radipisi cing elitBeatae autem aperiam nequ quaera molestias voluptatibus harum ametipsa.",
                 "img": "https://i.ibb.co/dGDkr4v/1.jpg"
             };
 
-            const result = await servicesCollection.insertOne(service);
+            const result = await placeCollection.insertOne(place);
             console.log(result);
 
         });
@@ -39,9 +39,9 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Running Genius Server');
+    res.send('Running Holiday Server');
 });
 
 app.listen(port, () => {
-    console.log('Running Genius Server on port', port);
+    console.log('Running Holiday Server on port', port);
 })
