@@ -37,7 +37,7 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const place = await placesCollection.findOne(query);
             res.json(place);
-        })
+        });
 
         // POST API
         app.post('/places', async (req, res) => {
@@ -48,6 +48,14 @@ async function run() {
             console.log(result);
             res.send(result);
 
+        });
+
+        // DElETE API
+        app.delete('/places/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await placesCollection.deleteOne(query);
+            res.json(result);
         });
     }
     finally {
