@@ -45,8 +45,8 @@ async function run() {
             console.log('hit the post api', place);
 
             const result = await placesCollection.insertOne(place);
-            console.log(result);
-            res.send(result);
+            // console.log(result);
+            res.json(result);
 
         });
 
